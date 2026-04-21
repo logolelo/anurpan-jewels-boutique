@@ -239,7 +239,7 @@ export default function Account() {
                           <div className="grid gap-3">
                             {o.lineItems.nodes.slice(0, 2).map((li) => {
                               const handle = li.productId ? handleMap[li.productId] : undefined;
-                              const link = handle ? `/product/${handle}` : undefined;
+                              const link = handle ? `/product/${encodeURIComponent(handle)}` : undefined;
                               return (
                                 <div key={li.id} className="flex items-center gap-3">
                                   <div className="h-16 w-16 rounded overflow-hidden bg-muted flex items-center justify-center">
@@ -279,7 +279,7 @@ export default function Account() {
                         <div className="mt-3 grid gap-3">
                           {o.lineItems.nodes.map((li) => {
                             const handle = li.productId ? handleMap[li.productId] : undefined;
-                            const link = handle ? `/product/${handle}` : undefined;
+                            const link = handle ? `/product/${encodeURIComponent(handle)}` : undefined;
                             return (
                               <div key={li.id} className="flex items-center gap-3">
                                 <div className="h-16 w-16 rounded overflow-hidden bg-muted flex items-center justify-center">

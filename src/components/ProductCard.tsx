@@ -52,8 +52,8 @@ export function ProductCard({ product, source }: ProductCardProps) {
   };
 
   return (
-    <Link 
-      to={`/product/${node.handle}`} 
+    <Link
+      to={`/product/${encodeURIComponent(node.handle)}`}
       state={{ from: source }}
       className="group block"
       onMouseEnter={prefetchProduct}

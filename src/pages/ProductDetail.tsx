@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ProductRow } from '@/components/ProductRow';
@@ -15,9 +15,11 @@ import SEO from '@/components/SEO';
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const source = location.state?.from as string | undefined;
 
   const { data: product, isLoading, error } = useProductByHandle(handle || '');
+  const { data: catalogProducts } = useProducts();
   const { data: allProducts } = useProducts(
     product?.productType ? `product_type:"${product.productType}"` : undefined
   );
@@ -27,6 +29,39 @@ const ProductDetail = () => {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  const normalizeSlug = (value: string) =>
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+  useEffect(() => {
+    if (!handle || product || isLoading || !catalogProducts) return;
+
+    const decodedHandle = decodeURIComponent(handle).trim();
+    const normalizedRequested = normalizeSlug(decodedHandle);
+
+    const matchByHandle = catalogProducts.find(
+      p => p.node.handle.toLowerCase() === decodedHandle.toLowerCase()
+    );
+    if (matchByHandle) {
+      const canonicalPath = `/product/${encodeURIComponent(matchByHandle.node.handle)}`;
+      if (canonicalPath !== `/product/${handle}`) {
+        navigate(canonicalPath, { replace: true });
+      }
+      return;
+    }
+
+    const matchByTitle = catalogProducts.find(
+      p => normalizeSlug(p.node.title) === normalizedRequested
+    );
+    if (matchByTitle) {
+      navigate(`/product/${encodeURIComponent(matchByTitle.node.handle)}`, { replace: true });
+    }
+  }, [catalogProducts, handle, isLoading, navigate, product]);
 
   if (isLoading) {
     return (
@@ -53,18 +88,31 @@ const ProductDetail = () => {
     );
   }
 
-  // SEO data extraction
-  const seoTitle = `${product.title} — Anurpan Jewellery`;
-  const seoDescription = product.description ? product.description.substring(0, 160) : `Explore ${product.title} from Anurpan Jewellery.`;
-  const canonicalUrl = `https://anurpanjewellery.com/product/${handle}`; // Assuming this is the correct canonical URL structure
-  const ogImage = product.images.edges[0]?.node.url || "https://anurpanjewellery.com/Anurpan Jewellery Logo.png";
-
   const images = product.images.edges;
   const variants = product.variants.edges;
   const selectedVariant = variants[selectedVariantIndex]?.node;
   const price = selectedVariant ? parseFloat(selectedVariant.price.amount) : 0;
   const priceCurrency = selectedVariant?.price.currencyCode || 'INR'; // Assuming INR as default currency
   const availability = selectedVariant?.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+
+  // Find the category (Silver 925 or Imitation) from tags
+  const productCategory = Object.keys(CATEGORIES).find(cat =>
+    product.tags.some(tag => tag.toLowerCase() === cat.toLowerCase())
+  );
+  const categoryLabel = productCategory || product.productType || 'jewellery';
+  const priceLabel = price > 0 ? `₹${price.toFixed(0)}` : 'best price';
+  const generatedSeoDescription = `Buy ${product.title} at ${priceLabel}. Premium ${categoryLabel} from Anurpan Jewellery.`;
+
+  // SEO data extraction
+  const seoTitle = `${product.title} — Anurpan Jewellery`;
+  const seoDescription = generatedSeoDescription;
+  const canonicalUrl = `https://anurpanjewellery.com/product/${product.handle}`;
+  const ogImage = product.images.edges[0]?.node.url || "https://anurpanjewellery.com/Anurpan Jewellery Logo.png";
+  const productDetailsText = product.description?.trim() || [
+    `A premium ${categoryLabel.toLowerCase()} piece designed for everyday elegance.`,
+    `Crafted for comfort and style, this ${product.title} pairs beautifully with both Indian and Western wear.`,
+    'Shop authentic Anurpan Jewellery with secure checkout and trusted delivery.',
+  ].join('\n');
 
   const productJsonLd = {
     "@context": "https://schema.org/",
@@ -86,11 +134,6 @@ const ProductDetail = () => {
       "name": "Anurpan Jewellery"
     }
   };
-
-  // Find the category (Silver 925 or Imitation) from tags
-  const productCategory = Object.keys(CATEGORIES).find(cat => 
-    product.tags.some(tag => tag.toLowerCase() === cat.toLowerCase())
-  );
 
   const compareAt = selectedVariant?.compareAtPrice ? parseFloat(selectedVariant.compareAtPrice.amount) : null;
   const hasDiscount = !!(compareAt && compareAt > price && compareAt > 0);
@@ -308,7 +351,7 @@ const ProductDetail = () => {
                 </TabsList>
                 <TabsContent value="details" className="mt-4">
                   <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-                    {product.description || 'No description available.'}
+                    {productDetailsText}
                   </p>
                 </TabsContent>
                 <TabsContent value="refund" className="mt-4">
