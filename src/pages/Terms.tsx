@@ -1,9 +1,20 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import SEO from '@/components/SEO';
 
 const Terms = () => {
+  const seoTitle = "Terms of Service — Anurpan Jewellery";
+  const seoDescription = "This website is operated by Anurpan Jewellery. By visiting our site and/ or purchasing something from us, you engage in our 'Service' and agree to be bound by the following terms and conditions.";
+  const canonicalUrl = "https://anurpanjewellery.com/terms";
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+      />
       <Navbar />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-10 lg:py-14">

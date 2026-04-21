@@ -27,7 +27,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 bg-primary border-b border-primary-foreground/10">
       {/* Top bar */}
       <div className="bg-[#C89641] text-[#4a2c1d] text-center py-1.5 text-xs font-body font-semibold tracking-wide border-b border-[#C89641]/10">
-        Free Shipping on Orders Above ₹999 | 7 Days Easy Returns
+        Free Shipping on Orders Above ₹9999 | 7 Days Easy Returns
       </div>
 
       <div className="container mx-auto px-4">
@@ -95,9 +95,9 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="inline-flex items-center">
             <img 
-              src="/Logo_Anurpan_Black_1.svg" 
-              alt="Anurpan" 
-              className="h-12 lg:h-14 w-auto brightness-0 invert-[.52] sepia-[.82] saturate-[4.11] hue-rotate-[5deg] contrast-[.92]" 
+              src="/Anurpan Jewellery Logo.png" 
+              alt="Anurpan Jewellery" 
+              className="h-12 lg:h-14 w-auto" 
             />
           </Link>
 

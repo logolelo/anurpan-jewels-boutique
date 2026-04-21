@@ -1,9 +1,20 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import SEO from '@/components/SEO';
 
 const PrivacyPolicy = () => {
+  const seoTitle = "Privacy Policy — Anurpan Jewellery";
+  const seoDescription = "This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from anurpanjewellerydev.vercel.app.";
+  const canonicalUrl = "https://anurpanjewellery.com/privacy-policy";
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+      />
       <Navbar />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-10 lg:py-14">

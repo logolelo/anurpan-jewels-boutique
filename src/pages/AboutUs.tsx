@@ -1,27 +1,36 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Sparkles, ShieldCheck, Heart, Zap } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 const AboutUs = () => {
+  const seoTitle = "About Anurpan Jewellery";
+  const seoDescription = "Learn about Anurpan Jewellery, specializing in lightweight, anti-tarnish, and anti-allergic Silver 925 and Imitation jewellery for the modern woman.";
+  const canonicalUrl = "https://anurpanjewellery.com/about-us";
+
+  const aboutUsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": seoTitle,
+    "description": seoDescription,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Anurpan Jewellery",
+      "logo": "https://anurpanjewellery.com/Logo_Anurpan_Black_1.svg"
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+        jsonLd={aboutUsJsonLd}
+      />
       <Navbar />
       <main className="flex-1 bg-background">
-        {/* SEO Schema Markup */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            "name": "About Anurpan Jewellery",
-            "description": "Learn about Anurpan Jewellery, specializing in lightweight, anti-tarnish, and anti-allergic Silver 925 and Imitation jewellery for the modern woman.",
-            "publisher": {
-              "@type": "Organization",
-              "name": "Anurpan Jewellery",
-              "logo": "https://anurpanjewellery.com/Logo_Anurpan_Black_1.svg"
-            }
-          })}
-        </script>
-
         {/* Hero Section */}
         <section className="relative py-12 lg:py-20 overflow-hidden bg-primary text-primary-foreground">
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-50"></div>

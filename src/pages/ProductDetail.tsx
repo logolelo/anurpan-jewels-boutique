@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ShoppingCart, Minus, Plus, Loader2, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { CATEGORIES } from '@/lib/constants';
+import SEO from '@/components/SEO';
 
 const ProductDetail = () => {
   const { handle } = useParams<{ handle: string }>();
@@ -52,15 +53,45 @@ const ProductDetail = () => {
     );
   }
 
-  // Find the category (Silver 925 or Imitation) from tags
-  const productCategory = Object.keys(CATEGORIES).find(cat => 
-    product.tags.some(tag => tag.toLowerCase() === cat.toLowerCase())
-  );
+  // SEO data extraction
+  const seoTitle = `${product.title} — Anurpan Jewellery`;
+  const seoDescription = product.description ? product.description.substring(0, 160) : `Explore ${product.title} from Anurpan Jewellery.`;
+  const canonicalUrl = `https://anurpanjewellery.com/product/${handle}`; // Assuming this is the correct canonical URL structure
+  const ogImage = product.images.edges[0]?.node.url || "https://anurpanjewellery.com/Anurpan Jewellery Logo.png";
 
   const images = product.images.edges;
   const variants = product.variants.edges;
   const selectedVariant = variants[selectedVariantIndex]?.node;
   const price = selectedVariant ? parseFloat(selectedVariant.price.amount) : 0;
+  const priceCurrency = selectedVariant?.price.currencyCode || 'INR'; // Assuming INR as default currency
+  const availability = selectedVariant?.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+
+  const productJsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.title,
+    "image": ogImage,
+    "description": seoDescription,
+    "sku": selectedVariant?.sku,
+    "offers": {
+      "@type": "Offer",
+      "url": canonicalUrl,
+      "priceCurrency": priceCurrency,
+      "price": price.toFixed(2),
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": availability,
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Anurpan Jewellery"
+    }
+  };
+
+  // Find the category (Silver 925 or Imitation) from tags
+  const productCategory = Object.keys(CATEGORIES).find(cat => 
+    product.tags.some(tag => tag.toLowerCase() === cat.toLowerCase())
+  );
+
   const compareAt = selectedVariant?.compareAtPrice ? parseFloat(selectedVariant.compareAtPrice.amount) : null;
   const hasDiscount = !!(compareAt && compareAt > price && compareAt > 0);
 
@@ -99,6 +130,13 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage={ogImage}
+        jsonLd={productJsonLd}
+      />
       <Navbar />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8 lg:py-12">

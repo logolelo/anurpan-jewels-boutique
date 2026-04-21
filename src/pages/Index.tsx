@@ -7,6 +7,7 @@ import { PromoBanner } from '@/components/PromoBanner';
 import { FeaturesMarquee } from '@/components/FeaturesMarquee';
 import { useProducts } from '@/hooks/useProducts';
 import { Loader2 } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 const Index = () => {
   const { data: products, isLoading } = useProducts();
@@ -21,6 +22,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Anurpan Jewellery — Silver 925 & Imitation Jewellery"
+        description="Discover exquisite Silver 925 and imitation jewellery at Anurpan. Shop our curated collections for festive, wedding, everyday, office, and party wear. Free shipping & 7-day returns."
+        canonical="https://anurpanjewellery.com/"
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+      />
       <Navbar />
 
       <main className="flex-1">

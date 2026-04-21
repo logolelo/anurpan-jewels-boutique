@@ -1,36 +1,45 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
+import SEO from '@/components/SEO';
 
 const Contact = () => {
+  const seoTitle = "Contact Us — Anurpan Jewellery";
+  const seoDescription = "Get in touch with Anurpan Jewellery for inquiries about our Silver 925 and Imitation jewellery collections.";
+  const canonicalUrl = "https://anurpanjewellery.com/contact";
+
+  const contactJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": seoTitle,
+    "description": seoDescription,
+    "mainEntity": {
+      "@type": "Store",
+      "name": "Anurpan Jewellery",
+      "email": "anurpanjewellery@gmail.com",
+      "telephone": ["+91 9152520710", "+91 7039036583"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Shop no 111 Ashar enclave building, Kolshet Road Dhokali Next to D mart",
+        "addressLocality": "Thane",
+        "addressRegion": "Maharashtra",
+        "postalCode": "400607",
+        "addressCountry": "IN"
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+        jsonLd={contactJsonLld}
+      />
       <Navbar />
       <main className="flex-1">
-        {/* SEO Schema Markup */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ContactPage",
-            "name": "Contact Anurpan Jewellery",
-            "description": "Get in touch with Anurpan Jewellery for inquiries about our Silver 925 and Imitation jewellery collections.",
-            "mainEntity": {
-              "@type": "Store",
-              "name": "Anurpan Jewellery",
-              "email": "anurpanjewellery@gmail.com",
-              "telephone": ["+91 9152520710", "+91 7039036583"],
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Shop no 111 Ashar enclave building, Kolshet Road Dhokali Next to D mart",
-                "addressLocality": "Thane",
-                "addressRegion": "Maharashtra",
-                "postalCode": "400607",
-                "addressCountry": "IN"
-              }
-            }
-          })}
-        </script>
-
         <div className="container mx-auto px-4 py-10 lg:py-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 lg:mb-16">

@@ -21,6 +21,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import SEO from '@/components/SEO';
 
 type SortOption = 'price-low' | 'price-high' | 'alpha-asc' | 'alpha-desc' | 'newest' | 'best-sellers' | 'new-arrivals';
 
@@ -80,7 +81,7 @@ const Products = () => {
     if (!products) return [];
     
     // Strict client-side filtering to match sidebar counts exactly
-    let items = products.filter((p) => {
+    const items = products.filter((p) => {
       if (category && !p.node.tags.includes(category)) return false;
       if (sub && p.node.productType !== sub) return false;
       if (collection && !p.node.tags.includes(collection)) return false;
@@ -182,7 +183,10 @@ const Products = () => {
     setSearchParams(new URLSearchParams());
   };
 
-  const title = special || collection || (category && sub ? `${category} — ${sub}` : category || sub || (q ? `Search: "${q}"` : 'All Products'));
+  const pageTitle = special || collection || (category && sub ? `${category} — ${sub}` : category || sub || (q ? `Search: "${q}"` : 'All Products'));
+  const seoTitle = `${pageTitle} — Anurpan Jewellery`;
+  const seoDescription = `Browse our collection of ${pageTitle.toLowerCase()} at Anurpan Jewellery. Find exquisite Silver 925 and imitation jewellery.`;
+  const canonicalUrl = window.location.href;
 
   const FilterContent = () => (
     <div className="space-y-8">
@@ -266,6 +270,12 @@ const Products = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+      />
       <Navbar />
       <main className="flex-1 bg-background">
         <div className="container mx-auto px-4 py-8 lg:py-12">
@@ -306,7 +316,7 @@ const Products = () => {
                   <span className="text-foreground font-medium">All Products</span>
                 )}
               </nav>
-              <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground">{title}</h1>
+              <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground">{pageTitle}</h1>
             </div>
 
             <div className="flex items-center gap-3">

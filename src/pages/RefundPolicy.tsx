@@ -1,9 +1,20 @@
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import SEO from '@/components/SEO';
 
 const RefundPolicy = () => {
+  const seoTitle = "Refund Policy — Anurpan Jewellery";
+  const seoDescription = "Our refund policy lasts 30 days. To be eligible for a return, your item must be unused and in the same condition that you received it. It must also be in the original packaging.";
+  const canonicalUrl = "https://anurpanjewellery.com/refund-policy";
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+      />
       <Navbar />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-10 lg:py-14">
