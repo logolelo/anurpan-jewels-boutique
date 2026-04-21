@@ -36,7 +36,7 @@ const Contact = () => {
         description={seoDescription}
         canonical={canonicalUrl}
         ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
-        jsonLd={contactJsonLld}
+        jsonLd={contactJsonLd}
       />
       <Navbar />
       <main className="flex-1">
