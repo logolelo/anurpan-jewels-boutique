@@ -66,14 +66,6 @@ const Products = () => {
     return parts.join(' ') || undefined;
   }, [q, category, sub, collection, special]);
 
-  const activeFilters = [
-    category && { key: 'category', value: category },
-    sub && { key: 'sub', value: sub },
-    collection && { key: 'collection', value: collection },
-    special && { key: 'special', value: special },
-    q && { key: 'q', value: `Search: ${q}` },
-  ].filter(Boolean) as { key: string; value: string }[];
-
   const { data: products, isLoading } = useProducts(shopifyQuery);
   const { data: allProducts, isLoading: isCountsLoading } = useAllProducts();
 
@@ -186,7 +178,41 @@ const Products = () => {
   const pageTitle = special || collection || (category && sub ? `${category} — ${sub}` : category || sub || (q ? `Search: "${q}"` : 'All Products'));
   const seoTitle = `${pageTitle} — Anurpan Jewellery`;
   const seoDescription = `Browse our collection of ${pageTitle.toLowerCase()} at Anurpan Jewellery. Find exquisite Silver 925 and imitation jewellery.`;
-  const canonicalUrl = window.location.href;
+  const canonicalUrl = "https://anurpanjewellery.com/products";
+  const hasActiveFilters = Boolean(category || sub || collection || special || q);
+  const breadcrumbJsonLd = (category || sub) ? {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://anurpanjewellery.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": "https://anurpanjewellery.com/products"
+      },
+      ...(category ? [{
+        "@type": "ListItem",
+        "position": 3,
+        "name": category,
+        "item": `https://anurpanjewellery.com/products?category=${encodeURIComponent(category)}`
+      }] : []),
+      ...(sub ? [{
+        "@type": "ListItem",
+        "position": category ? 4 : 3,
+        "name": sub,
+        "item": `https://anurpanjewellery.com/products?${new URLSearchParams({
+          ...(category ? { category } : {}),
+          sub,
+        }).toString()}`
+      }] : []),
+    ]
+  } : undefined;
 
   const FilterContent = () => (
     <div className="space-y-8">
@@ -275,6 +301,8 @@ const Products = () => {
         description={seoDescription}
         canonical={canonicalUrl}
         ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+        noindex={hasActiveFilters}
+        jsonLd={breadcrumbJsonLd}
       />
       <Navbar />
       <main className="flex-1 bg-background">

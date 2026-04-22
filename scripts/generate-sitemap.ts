@@ -10,7 +10,12 @@ const __dirname = path.dirname(__filename);
 
 const BASE_URL = 'https://anurpanjewellery.com';
 
-async function getProductHandles() {
+interface ProductSitemapEntry {
+  handle: string;
+  updatedAt: string;
+}
+
+async function getProductMetadata(): Promise<ProductSitemapEntry[]> {
   const shopifyDomain = process.env.VITE_SHOPIFY_STORE_DOMAIN;
   const shopifyToken = process.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
 
@@ -25,6 +30,7 @@ async function getProductHandles() {
         edges {
           node {
             handle
+            updatedAt
           }
         }
       }
@@ -41,15 +47,15 @@ async function getProductHandles() {
       body: query,
     });
     const data = await response.json();
-    return data.data.products.edges.map((edge: { node: { handle: string } }) => edge.node.handle);
+    return data.data.products.edges.map((edge: { node: ProductSitemapEntry }) => edge.node);
   } catch (error) {
-    console.error("Error fetching product handles for sitemap:", error);
+    console.error("Error fetching product metadata for sitemap:", error);
     return [];
   }
 }
 
 async function generateSitemap() {
-  const productHandles = await getProductHandles();
+  const productMetadata = await getProductMetadata();
   const staticRoutes = [
     '', // homepage
     'products',
@@ -60,21 +66,29 @@ async function generateSitemap() {
     'privacy-policy',
   ];
 
-  const productRoutes = productHandles.map(handle => `product/${handle}`);
-
-  const allRoutes = [...staticRoutes, ...productRoutes];
+  const today = new Date().toISOString().split('T')[0];
+  const staticEntries = staticRoutes.map((route) => ({
+    route,
+    lastmod: today,
+    priority: route === '' ? '1.0' : '0.8',
+  }));
+  const productEntries = productMetadata.map((product) => ({
+    route: `product/${product.handle}`,
+    lastmod: (product.updatedAt || today).split('T')[0],
+    priority: '0.8',
+  }));
+  const allEntries = [...staticEntries, ...productEntries];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${allRoutes.map(route => {
+  ${allEntries.map(({ route, lastmod, priority }) => {
     const url = `${BASE_URL}/${route}`;
-    const lastmod = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
     return `
   <url>
     <loc>${url}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>${route === '' ? '1.0' : '0.8'}</priority>
+    <priority>${priority}</priority>
   </url>`;
   }).join('')}
 </urlset>`;

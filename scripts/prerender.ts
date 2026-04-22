@@ -58,8 +58,6 @@ const staticRoutes = [
   '/about-us',
   '/contact',
   '/products',
-  '/login',
-  '/account',
   '/privacy-policy',
   '/refund-policy',
   '/terms',

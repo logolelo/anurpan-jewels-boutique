@@ -6,6 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { startLogin, isAuthenticated } from "@/lib/auth";
 import { User } from "lucide-react";
+import SEO from "@/components/SEO";
 
 type Money = { amount?: string; currencyCode?: string } | null;
 type Address = {
@@ -88,6 +89,7 @@ export default function OrderDetail() {
 
   return (
     <>
+      <SEO title="Order Details — Anurpan Jewellery" noindex />
       <Navbar />
       <main className="container mx-auto px-4 py-10">
         <h1 className="font-display text-3xl font-bold mb-6">Order Details</h1>

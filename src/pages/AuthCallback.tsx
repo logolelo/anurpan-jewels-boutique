@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleCallback } from "@/lib/auth";
+import SEO from "@/components/SEO";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -10,5 +11,5 @@ export default function AuthCallback() {
       navigate(ok ? "/account" : "/login");
     })();
   }, [navigate]);
-  return null;
+  return <SEO title="Authenticating — Anurpan Jewellery" noindex />;
 }

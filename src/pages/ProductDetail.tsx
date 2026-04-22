@@ -115,7 +115,6 @@ const ProductDetail = () => {
   ].join('\n');
 
   const productJsonLd = {
-    "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.title,
     "image": ogImage,
@@ -133,6 +132,39 @@ const ProductDetail = () => {
       "@type": "Brand",
       "name": "Anurpan Jewellery"
     }
+  };
+  const breadcrumbJsonLd = {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://anurpanjewellery.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": "https://anurpanjewellery.com/products"
+      },
+      ...(productCategory ? [{
+        "@type": "ListItem",
+        "position": 3,
+        "name": productCategory,
+        "item": `https://anurpanjewellery.com/products?category=${encodeURIComponent(productCategory)}`
+      }] : []),
+      {
+        "@type": "ListItem",
+        "position": productCategory ? 4 : 3,
+        "name": product.title,
+        "item": canonicalUrl
+      }
+    ]
+  };
+  const seoJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [productJsonLd, breadcrumbJsonLd]
   };
 
   const compareAt = selectedVariant?.compareAtPrice ? parseFloat(selectedVariant.compareAtPrice.amount) : null;
@@ -178,7 +210,7 @@ const ProductDetail = () => {
         description={seoDescription}
         canonical={canonicalUrl}
         ogImage={ogImage}
-        jsonLd={productJsonLd}
+        jsonLd={seoJsonLd}
       />
       <Navbar />
       <main className="flex-1">

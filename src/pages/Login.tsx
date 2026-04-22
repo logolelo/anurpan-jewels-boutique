@@ -3,11 +3,13 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { isAuthenticated, startLogin, logout } from "@/lib/auth";
 import { User, LogOut } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function Login() {
   const authed = isAuthenticated();
   return (
     <>
+      <SEO title="Login — Anurpan Jewellery" noindex />
       <Navbar />
       <main className="container mx-auto px-4 py-10">
         <h1 className="font-display text-3xl font-bold mb-6">Customer Account</h1>

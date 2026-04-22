@@ -19,6 +19,37 @@ const Index = () => {
     products?.filter((p) => hasTag(p, 'Best Sellers')).slice(0, 10) || [];
   const newArrivals =
     products?.filter((p) => hasTag(p, 'New Arrivals')).slice(0, 10) || [];
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Anurpan Jewellery",
+        "url": "https://anurpanjewellery.com",
+        "logo": "https://anurpanjewellery.com/Anurpan Jewellery Logo.png",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91 9152520710",
+            "contactType": "customer service",
+            "email": "anurpanjewellery@gmail.com",
+            "areaServed": "IN",
+            "availableLanguage": ["en"]
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "name": "Anurpan Jewellery",
+        "url": "https://anurpanjewellery.com/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://anurpanjewellery.com/products?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -27,6 +58,7 @@ const Index = () => {
         description="Discover exquisite Silver 925 and imitation jewellery at Anurpan. Shop our curated collections for festive, wedding, everyday, office, and party wear. Free shipping & 7-day returns."
         canonical="https://anurpanjewellery.com/"
         ogImage="https://anurpanjewellery.com/Anurpan Jewellery Logo.png"
+        jsonLd={homeJsonLd}
       />
       <Navbar />
 

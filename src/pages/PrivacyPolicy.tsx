@@ -4,7 +4,7 @@ import SEO from '@/components/SEO';
 
 const PrivacyPolicy = () => {
   const seoTitle = "Privacy Policy — Anurpan Jewellery";
-  const seoDescription = "This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from anurpanjewellerydev.vercel.app.";
+  const seoDescription = "This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from anurpanjewellery.com.";
   const canonicalUrl = "https://anurpanjewellery.com/privacy-policy";
 
   return (
@@ -21,7 +21,7 @@ const PrivacyPolicy = () => {
           <h1 className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>
           <div className="prose prose-sm lg:prose lg:max-w-none text-muted-foreground max-w-4xl">
             <p className="mb-6">
-              This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from <span className="font-medium text-foreground">anurpanjewellerydev.vercel.app</span>.
+              This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from <span className="font-medium text-foreground">anurpanjewellery.com</span>.
             </p>
 
             <section className="mb-8">

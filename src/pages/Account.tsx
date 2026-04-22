@@ -8,6 +8,7 @@ import { User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { StatusBadge } from "@/components/StatusBadge";
 import { resolveProductHandles } from "@/lib/shopify";
+import SEO from "@/components/SEO";
 
 export default function Account() {
   const authed = isAuthenticated();
@@ -173,6 +174,7 @@ export default function Account() {
 
   return (
     <>
+      <SEO title="My Account — Anurpan Jewellery" noindex />
       <Navbar />
       <main className="container mx-auto px-4 py-10">
         <h1 className="font-display text-3xl font-bold mb-6">My Account</h1>
